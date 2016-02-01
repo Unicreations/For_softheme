@@ -1,0 +1,112 @@
+import java.io.*;
+
+public class FileWorker {
+
+
+    private static String fileName = "C://Users//User//Desktop//Курсы/INPUT.txt";
+    private static String fileName1 = "C://Users//User//Desktop//Курсы//OUTPUT.txt";
+    static final int capacity = 100;
+
+
+    private static void exists(String fileName) throws FileNotFoundException {
+      File file = new File(fileName);
+        if (!file.exists()) {
+            throw new FileNotFoundException(file.getName());
+        }
+    }
+
+    public static int[] read(String fileName) throws FileNotFoundException {
+
+        int arr[] = new int[capacity];
+
+        exists(fileName);
+        File file = new File(fileName);
+
+
+        try {
+
+            BufferedReader in = new BufferedReader(new FileReader(file.getAbsoluteFile()));
+            try {
+
+                while (in.read() != -1) {
+                    for (int i = 0; i < capacity; i++) {
+                        arr[i] = in.read();
+                    }
+                }
+            } finally {
+
+                in.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return arr;
+    }
+
+    public int Calcul() throws FileNotFoundException {
+
+
+        int ones = 0;
+        int arr1[] = new int[capacity];
+        int s = 0;
+
+        int text[] = FileWorker.read(fileName);
+
+
+        for (int i = 0; i < capacity; i++) {
+            if(text[i]==49)
+            { ones++;}
+
+       else
+        {
+            if(ones!=0)
+            {
+                arr1[s]=ones;
+                s++;
+                ones=0;
+            }
+
+        }
+
+        }
+         int tmp = 0  ;
+        for (int i = 0; i < arr1.length; i++) {
+            if (tmp<arr1[i]) {
+                tmp = arr1[i];
+
+            }
+        }
+            return tmp;
+
+    }
+    public void outputting()
+    {
+
+        File file = new File(fileName1);
+        int text;
+        try {
+
+            if(!file.exists()){
+                file.createNewFile();
+            }
+
+
+            PrintWriter out = new PrintWriter(file.getAbsoluteFile());
+
+            try {
+                text = Calcul();
+                out.print(text);
+            } finally {
+                       out.close();
+            }
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void main(String[] args) {
+        FileWorker obj= new FileWorker();
+        obj. outputting();
+    }
+}
